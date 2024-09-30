@@ -7,8 +7,6 @@ const db = require('./db')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
-const Person = require('./DataModal/PersonDataModal')
-const MenuItems=require('./DataModal/MenuDataModel')
 const PersonRoutes=require('./ExpressRoutes/PersonRouter')
 const MenuRoutes=require('./ExpressRoutes/MenuRouter')
 

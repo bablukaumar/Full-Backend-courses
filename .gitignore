@@ -4,6 +4,3 @@ node_modules
 # ignore inv file
 
 .env
-
-# Trying file for coding and practice inside the file
-try.js
