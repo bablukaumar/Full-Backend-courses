@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express();
+require('dotenv').config();
+
 const db = require('./db')
+
 
 
 
@@ -11,7 +14,7 @@ const PersonRoutes=require('./ExpressRoutes/PersonRouter')
 const MenuRoutes=require('./ExpressRoutes/MenuRouter')
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
     res.send("this is my home page")

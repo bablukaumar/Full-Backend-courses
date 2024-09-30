@@ -4,6 +4,3 @@ node_modules/
 # ignore inv file
 
 .env
-#  ignore the try file
-
-try.js
