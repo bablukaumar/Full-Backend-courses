@@ -6,4 +6,4 @@ node_modules/
 .env
 #  ignore the try file
 
-try.js/
+try.js
