@@ -4,19 +4,17 @@ require('dotenv').config();
 
 /* Local DataBase connection------------- */
 
-// const mongoURL=process.env.local_DB
+const mongoURL=process.env.local_DB
 
 /*Global database connection------------- */
-const mongoURL=process.env.DB_URL;
+// const mongoURL=process.env.DB_URL;
 
 
+mongoose.connect(mongoURL)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 
-mongoose.connect(mongoURL,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-
-})
 
 const db=mongoose.connection;
 

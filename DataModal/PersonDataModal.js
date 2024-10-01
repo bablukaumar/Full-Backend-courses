@@ -1,10 +1,11 @@
-const { union } = require('lodash')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 // Creating schema
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: true
+        required: true
     },
     age: {
         type: Number
@@ -12,30 +13,69 @@ const personSchema = new mongoose.Schema({
     work: {
         type: String,
         enum: ['chef', 'manager', 'waiter'],
-        require: true
+        required: true
     },
     mobile: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
     },
-    address:{
-        type:String,
-
+    address: {
+        type: String,
     },
-    salary:{
-        type:Number,
-        require:true
+    salary: {
+        type: Number,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
     }
-
 });
 
-// creating modal
+// Pre-save middleware to hash password before saving
+personSchema.pre('save', async function (next) {
+    const person = this;
+    
+    // Only hash the password if it has been modified (or is new)
+    if (!person.isModified('password')) return next();
 
-const Person=mongoose.model('Person',personSchema);
+    try {
+        // Generate salt
+        const salt = await bcrypt.genSalt(10);
 
-module.exports=Person;
+        // Hash password using the salt
+        const hashPassword = await bcrypt.hash(person.password, salt);
+
+        // Override the plain password with the hashed one
+        person.password = hashPassword;
+
+        next(); // Proceed to the next middleware
+    } catch (error) {
+        return next(error);
+    }
+});
+
+// Instance method to compare passwords
+personSchema.methods.comparePassword = async function (candidatePassword) {
+    try {
+        // Compare the plain text password with the hashed password
+        const isMatch = await bcrypt.compare(candidatePassword, this.password);
+        return isMatch;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Creating the model
+const Person = mongoose.model('Person', personSchema);
+
+module.exports = Person;
